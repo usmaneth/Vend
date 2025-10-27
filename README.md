@@ -1,5 +1,7 @@
 # Vend 🎰
 
+<img width="498" height="241" alt="Screenshot 2025-10-27 at 4 41 39 AM" src="https://github.com/user-attachments/assets/56a18ece-52db-4914-9553-b421f3c7f503" />
+
 **Monetized Transaction History API using x402 and Alchemy**
 
 Blockchain data on demand - like a vending machine for blockchain data. Insert payment (USDC), get instant access to transaction histories. No accounts, no API keys, just pay-per-use.
