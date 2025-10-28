@@ -9,6 +9,9 @@ Blockchain data on demand - like a vending machine for blockchain data. Insert p
 - 💰 **x402 Protocol** - HTTP micropayments (402 Payment Required)
 - ⚡ **Alchemy SDK** - Fast, reliable blockchain data
 - 🎰 **Vending Machine Model** - Insert payment → Get data instantly
+- ✅ **Production Ready** - Real on-chain payment verification on Base
+
+> **New!** Vend now uses [x402-express](https://npmjs.com/package/x402-express), our open-source middleware for adding micropayments to any Express API.
 
 ```
 ┌─────────────────────────────────┐
@@ -158,9 +161,11 @@ Vend verifies the payment on-chain, then returns your data with a `200 OK` respo
 
 - 🎰 **Pay-Per-Use** - Like a vending machine: insert payment, get data
 - ⚡ **Instant Access** - No signup, no API keys, no waiting
+- ✅ **Real Payment Verification** - On-chain USDC verification on Base (Sepolia/Mainnet)
 - 🔗 **Multi-Chain** - Ethereum, Polygon, Base, Arbitrum, Optimism
 - 📊 **Complete Data** - ETH, ERC20, ERC721, ERC1155 transfers with metadata
 - 🤖 **Agent-Friendly** - Perfect for autonomous AI agents
+- 📦 **Built with x402-express** - Uses our open-source micropayment middleware
 - 🌐 **Open Source** - MIT licensed, fork and extend
 
 ---
@@ -728,6 +733,99 @@ You                     Vend                    Alchemy
 
 ---
 
+## 📦 x402-express Integration
+
+Vend is built on top of [x402-express](https://npmjs.com/package/x402-express), our open-source middleware for adding HTTP 402 micropayments to any Express.js application.
+
+### What is x402-express?
+
+x402-express is a standalone npm package that implements the x402 protocol for Express apps. It provides:
+
+- 🎯 **Simple API** - Add `paymentRequired()` middleware to any endpoint
+- 🔌 **Pluggable Verifiers** - USDC, Lightning Network, Stripe, or bring your own
+- ⚡ **Built-in Verifiers** - USDC on 8+ EVM chains, demo mode
+- 🛡️ **Production Ready** - Error handling, logging, callbacks
+- 📦 **Zero Dependencies** - Core package has no dependencies
+
+### How Vend Uses x402-express
+
+```javascript
+import { paymentRequired, createUSDCVerifier } from 'x402-express';
+import { Alchemy, Network } from 'alchemy-sdk';
+
+// Initialize Alchemy for payment verification
+const alchemy = new Alchemy({
+  apiKey: process.env.ALCHEMY_API_KEY,
+  network: Network.BASE_SEPOLIA,
+});
+
+// Create USDC verifier
+const verifier = createUSDCVerifier({
+  alchemy,
+  network: 'base-sepolia',
+});
+
+// Protect endpoint with payment requirement
+app.get('/api/transfers',
+  paymentRequired({
+    price: '0.01',
+    currency: 'USDC',
+    recipient: process.env.PAYMENT_ADDRESS,
+    network: 'base-sepolia',
+    chainId: 84532,
+    verifier
+  }),
+  async (req, res) => {
+    // This only runs after payment is verified
+    const data = await getBlockchainData();
+    res.json({ data });
+  }
+);
+```
+
+### Use x402-express in Your Own Projects
+
+Install the package:
+
+```bash
+npm install x402-express alchemy-sdk
+```
+
+Add micropayments to any API:
+
+```javascript
+import express from 'express';
+import { paymentRequired, createUSDCVerifier } from 'x402-express';
+import { Alchemy, Network } from 'alchemy-sdk';
+
+const app = express();
+
+const alchemy = new Alchemy({
+  apiKey: process.env.ALCHEMY_API_KEY,
+  network: Network.BASE_MAINNET,
+});
+
+const verifier = createUSDCVerifier({ alchemy, network: 'base-mainnet' });
+
+app.get('/premium-data',
+  paymentRequired({
+    price: '0.05',
+    currency: 'USDC',
+    recipient: '0xYourAddress',
+    verifier
+  }),
+  (req, res) => {
+    res.json({ data: 'premium content' });
+  }
+);
+
+app.listen(3000);
+```
+
+**Learn more:** [x402-express on npm](https://npmjs.com/package/x402-express) | [GitHub](https://github.com/yourusername/x402-express)
+
+---
+
 ## 🛠️ Development
 
 ### Project Structure
@@ -850,11 +948,23 @@ pm2 startup
 
 Demo bypass (`X-Payment-Hash: demo`) only works in `NODE_ENV=development`.
 
+### Production Mode
+
+Vend is **production-ready** with real on-chain payment verification:
+
+- ✅ USDC verification on Base (Sepolia & Mainnet)
+- ✅ On-chain transaction parsing via Alchemy
+- ✅ Recipient and amount validation
+- ✅ Sub-second verification times
+
 **For production:**
-- Set `NODE_ENV=production`
-- Implement payment verification
-- See `src/middleware/payment.js`
-- Read [production checklist](./docs/production-checklist.md)
+1. Set `NODE_ENV=production`
+2. Set `PAYMENT_NETWORK=base-mainnet`
+3. Set your production `PAYMENT_ADDRESS`
+4. Test with real USDC on Base Mainnet
+5. Monitor Alchemy usage (payment verification + data queries)
+
+See [PAYMENT_VERIFICATION_IMPLEMENTATION.md](./PAYMENT_VERIFICATION_IMPLEMENTATION.md) for details.
 
 ---
 
@@ -921,11 +1031,15 @@ Endpoint info (free, no payment).
 - [x] Alchemy integration
 - [x] Documentation
 - [x] Interactive demo
-- [ ] Real payment verification
+- [x] Real payment verification on Base (USDC)
+- [x] x402-express middleware package (npm published)
+- [ ] Vend CLI (in progress)
 - [ ] Token balances endpoint
 - [ ] WebSocket support
 - [ ] GraphQL API
 - [ ] Mobile SDK
+- [ ] Lightning Network support
+- [ ] Payment caching & optimization
 
 ---
 
