@@ -29,7 +29,7 @@ Client → Resource Server → Blockchain
 - ✅ Full control over verification
 - ✅ Simpler architecture
 - ✅ Lower latency (~200-400ms)
-- ❌ Requires blockchain RPC access (Alchemy/Infura)
+- ❌ Requires blockchain RPC access (Alchemy)
 
 ## When to Use Each?
 
@@ -312,7 +312,7 @@ app.get('/api/data',
 | Feature | x402-onchain-verification<br/>(This Package) | x402-express<br/>(Coinbase Official) |
 |---------|:--------------------------------------------:|:-------------------------------------:|
 | **Architecture** | Direct blockchain queries | Facilitator server |
-| **Dependencies** | Alchemy/Infura RPC | Facilitator service |
+| **Dependencies** | Alchemy RPC | Facilitator service |
 | **Verification Time** | ~200-400ms | Varies |
 | **Setup Complexity** | Low | Medium |
 | **Gasless** | No (client pays) | Yes (facilitator handles) |
@@ -373,7 +373,7 @@ curl -H "X-Payment-Hash: 0x123...abc" \
 
 ### On-Chain Verification Process
 
-1. **Fetch transaction receipt** from blockchain (Alchemy/Infura)
+1. **Fetch transaction receipt** from blockchain (Alchemy)
 2. **Parse ERC20 Transfer event** from transaction logs
 3. **Decode event data:**
    - Event signature: `0xddf252ad...` (Transfer event)
