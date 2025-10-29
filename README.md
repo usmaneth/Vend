@@ -11,7 +11,7 @@ Blockchain data on demand - like a vending machine for blockchain data. Insert p
 - 🎰 **Vending Machine Model** - Insert payment → Get data instantly
 - ✅ **Production Ready** - Real on-chain payment verification on Base
 
-> **New!** Vend now uses [x402-express](https://npmjs.com/package/x402-express), our open-source middleware for adding micropayments to any Express API.
+> **New!** Vend now uses [x402-onchain-verification](https://npmjs.com/package/x402-onchain-verification), our open-source middleware for direct on-chain payment verification - no facilitator servers needed.
 
 ```
 ┌─────────────────────────────────┐
@@ -165,7 +165,7 @@ Vend verifies the payment on-chain, then returns your data with a `200 OK` respo
 - 🔗 **Multi-Chain** - Ethereum, Polygon, Base, Arbitrum, Optimism
 - 📊 **Complete Data** - ETH, ERC20, ERC721, ERC1155 transfers with metadata
 - 🤖 **Agent-Friendly** - Perfect for autonomous AI agents
-- 📦 **Built with x402-express** - Uses our open-source micropayment middleware
+- 📦 **Built with x402-onchain-verification** - Direct blockchain verification, no facilitators
 - 🌐 **Open Source** - MIT licensed, fork and extend
 
 ---
@@ -733,24 +733,43 @@ You                     Vend                    Alchemy
 
 ---
 
-## 📦 x402-express Integration
+## x402-onchain-verification Integration
 
-Vend is built on top of [x402-express](https://npmjs.com/package/x402-express), our open-source middleware for adding HTTP 402 micropayments to any Express.js application.
+Vend is built on top of [x402-onchain-verification](https://npmjs.com/package/x402-onchain-verification), our open-source middleware for adding HTTP 402 micropayments to any Express.js application with **direct blockchain verification**.
 
-### What is x402-express?
+### What is x402-onchain-verification?
 
-x402-express is a standalone npm package that implements the x402 protocol for Express apps. It provides:
+x402-onchain-verification is a standalone npm package that implements the x402 protocol with direct on-chain payment verification - no facilitator servers needed. It provides:
 
-- 🎯 **Simple API** - Add `paymentRequired()` middleware to any endpoint
-- 🔌 **Pluggable Verifiers** - USDC, Lightning Network, Stripe, or bring your own
-- ⚡ **Built-in Verifiers** - USDC on 8+ EVM chains, demo mode
-- 🛡️ **Production Ready** - Error handling, logging, callbacks
-- 📦 **Zero Dependencies** - Core package has no dependencies
+- **Simple API** - Add `paymentRequired()` middleware to any endpoint
+- **Direct Verification** - Server queries blockchain directly via Alchemy/Infura
+- **Pluggable Verifiers** - USDC, custom tokens, or bring your own
+- **Built-in USDC Verifier** - Works on 8+ EVM chains (Base, Ethereum, Polygon, etc.)
+- **Production Ready** - Error handling, logging, callbacks
+- **No Facilitators** - Simpler architecture, full control
 
-### How Vend Uses x402-express
+### Why Direct On-Chain Verification?
+
+**x402 Protocol Approaches:**
+
+1. **Facilitator-based** (Coinbase official `x402-express`):
+   - Client → Server → Facilitator → Blockchain
+   - ✅ Gasless for clients
+   - ❌ Requires facilitator infrastructure
+
+2. **Direct on-chain** (This package - `x402-onchain-verification`):
+   - Client → Server → Blockchain
+   - ✅ No facilitator needed
+   - ✅ Simpler architecture
+   - ✅ Lower latency (~200-400ms)
+   - ❌ Requires blockchain RPC access
+
+**Vend uses direct on-chain verification** because it's perfect for simple USDC payments and eliminates external dependencies.
+
+### How Vend Uses x402-onchain-verification
 
 ```javascript
-import { paymentRequired, createUSDCVerifier } from 'x402-express';
+import { paymentRequired, createUSDCVerifier } from 'x402-onchain-verification';
 import { Alchemy, Network } from 'alchemy-sdk';
 
 // Initialize Alchemy for payment verification
@@ -759,7 +778,7 @@ const alchemy = new Alchemy({
   network: Network.BASE_SEPOLIA,
 });
 
-// Create USDC verifier
+// Create USDC verifier (queries blockchain directly)
 const verifier = createUSDCVerifier({
   alchemy,
   network: 'base-sepolia',
@@ -776,26 +795,26 @@ app.get('/api/transfers',
     verifier
   }),
   async (req, res) => {
-    // This only runs after payment is verified
+    // This only runs after payment is verified on-chain
     const data = await getBlockchainData();
     res.json({ data });
   }
 );
 ```
 
-### Use x402-express in Your Own Projects
+### Use x402-onchain-verification in Your Own Projects
 
 Install the package:
 
 ```bash
-npm install x402-express alchemy-sdk
+npm install x402-onchain-verification alchemy-sdk
 ```
 
 Add micropayments to any API:
 
 ```javascript
 import express from 'express';
-import { paymentRequired, createUSDCVerifier } from 'x402-express';
+import { paymentRequired, createUSDCVerifier } from 'x402-onchain-verification';
 import { Alchemy, Network } from 'alchemy-sdk';
 
 const app = express();
@@ -812,6 +831,8 @@ app.get('/premium-data',
     price: '0.05',
     currency: 'USDC',
     recipient: '0xYourAddress',
+    network: 'base-mainnet',
+    chainId: 8453,
     verifier
   }),
   (req, res) => {
@@ -822,7 +843,7 @@ app.get('/premium-data',
 app.listen(3000);
 ```
 
-**Learn more:** [x402-express on npm](https://npmjs.com/package/x402-express) | [GitHub](https://github.com/yourusername/x402-express)
+**Learn more:** [x402-onchain-verification on npm](https://npmjs.com/package/x402-onchain-verification) | [GitHub Monorepo](https://github.com/usmaneth/Vend/tree/main/packages/x402-onchain-verification)
 
 ---
 
@@ -1032,7 +1053,7 @@ Endpoint info (free, no payment).
 - [x] Documentation
 - [x] Interactive demo
 - [x] Real payment verification on Base (USDC)
-- [x] x402-express middleware package (npm published)
+- [x] x402-onchain-verification middleware package
 - [ ] Vend CLI (in progress)
 - [ ] Token balances endpoint
 - [ ] WebSocket support

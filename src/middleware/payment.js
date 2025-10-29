@@ -1,12 +1,12 @@
 /**
  * Vend Payment Middleware
  *
- * Uses x402-express for payment handling
+ * Uses x402-onchain-verification for payment handling
  * Configured for USDC payments on Base network
  */
 
 import { Alchemy, Network } from 'alchemy-sdk';
-import { paymentRequired, createUSDCVerifier, createDemoVerifier } from '../../packages/x402-express/src/index.js';
+import { paymentRequired, createUSDCVerifier, createDemoVerifier } from '../../packages/x402-onchain-verification/src/index.js';
 import { config } from '../config.js';
 import { logger } from '../logger.js';
 
@@ -33,7 +33,7 @@ function getPaymentAlchemy() {
 }
 
 /**
- * Logger adapter for x402-express
+ * Logger adapter for x402-onchain-verification
  */
 function x402Logger(message, level, data) {
   logger[level](data, message);
@@ -77,7 +77,7 @@ function createVerifier() {
 
 /**
  * Payment middleware factory for Vend
- * Wraps x402-express with Vend configuration
+ * Wraps x402-onchain-verification with Vend configuration
  *
  * @param {Object} options - Middleware options
  * @param {string} [options.price] - Override default price
