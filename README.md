@@ -2,19 +2,19 @@
 
 <img width="498" height="241" alt="Screenshot 2025-10-27 at 4 41 39 AM" src="https://github.com/user-attachments/assets/56a18ece-52db-4914-9553-b421f3c7f503" />
 
-**Pay-Per-Use Blockchain Data API via x402 & Alchemy**
+**Pay Per Use Blockchain Data API via x402 & Alchemy**
 
-Blockchain data on demand - like a vending machine. Insert payment (USDC), get instant access to NFTs, tokens, transactions, and more. No accounts, no API keys, just pay-per-use.
+Blockchain data on demand - like a vending machine. Insert payment (USDC), get instant access to NFTs, tokens, transactions, and more. No accounts, no API keys, just pay per query.
 
-### 🎯 What You Get
+### Vend Project Structure 
 
-**🖥️ Server API (Express + x402):**
+**🖥️ Vend Server API (Express + x402):**
 - 📊 **Transaction History** - Asset transfers (ETH, ERC20, ERC721, ERC1155)
 - 🖼️ **NFT Data** - Owned NFTs, metadata, floor prices
 - 🪙 **Token Balances** - ERC20 holdings and metadata
-- 🔔 **Webhooks** - Real-time notifications for new transactions
-- 💰 **x402 Payments** - USDC micropayments with on-chain verification
-- ✅ **Production Ready** - Deploy to mainnet in 5 minutes
+- 🔔 **Webhooks** - Real time notifications for new transactions
+- 💰 **x402 Payments** - USDC micropayments with on chain verification
+- ✅ **Production Ready** - Deploy to mainnet
 
 **⌨️ CLI Tool (@asimfiles/vend-cli):**
 - 🛠️ **8 Commands** - query, nfts, tokens, balance, info, config, saved, webhook
@@ -30,9 +30,9 @@ Blockchain data on demand - like a vending machine. Insert payment (USDC), get i
 │         🎰 VEND                 │
 │   Blockchain Data Vending       │
 │                                 │
-│  [Insert 0.01 USDC]            │
+│  [Insert 0.01 USDC]             │
 │         ↓                       │
-│  [Get NFTs, Tokens, Transfers]  │
+│  [Get Data]                     │
 └─────────────────────────────────┘
 ```
 
@@ -59,7 +59,7 @@ npm start
 # 4. Done! 🎉 Accept USDC payments on Base
 ```
 
-Real USDC payments work immediately - no additional setup needed. Payment verification happens automatically on-chain via Alchemy.
+Real USDC payments work immediately - no additional setup needed. Payment verification happens automatically on chain via Alchemy.
 
 📖 **[Full Deployment Guide](./DEPLOYMENT.md)** | Supports Base, Ethereum, Polygon, Arbitrum, Optimism
 
