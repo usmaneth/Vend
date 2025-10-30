@@ -1,0 +1,52 @@
+{
+  "name": "@asimfiles/vend-cli",
+  "version": "0.1.0",
+  "description": "CLI for consuming x402 payment-gated APIs - pay with USDC, get blockchain data",
+  "type": "module",
+  "bin": {
+    "vend": "./src/cli.js"
+  },
+  "files": [
+    "src/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "x402",
+    "cli",
+    "vend",
+    "blockchain",
+    "payments",
+    "usdc",
+    "micropayments",
+    "base",
+    "alchemy",
+    "crypto",
+    "web3"
+  ],
+  "author": "Usman (https://github.com/usmaneth)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/usmaneth/Vend.git",
+    "directory": "packages/vend-cli"
+  },
+  "homepage": "https://github.com/usmaneth/Vend#readme",
+  "bugs": {
+    "url": "https://github.com/usmaneth/Vend/issues"
+  },
+  "dependencies": {
+    "axios": "^1.6.2",
+    "boxen": "^7.1.1",
+    "chalk": "^5.3.0",
+    "cli-table3": "^0.6.3",
+    "commander": "^11.1.0",
+    "dotenv": "^16.3.1",
+    "ethers": "^6.15.0",
+    "inquirer": "^9.2.12",
+    "ora": "^8.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

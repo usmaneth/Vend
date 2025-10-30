@@ -1,0 +1,27 @@
+# Development files
+node_modules/
+.DS_Store
+*.log
+npm-debug.log*
+
+# Editor directories
+.vscode/
+.idea/
+
+# Test files
+test/
+tests/
+*.test.js
+
+# Git
+.git/
+.gitignore
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Misc
+coverage/
+.nyc_output/
