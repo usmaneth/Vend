@@ -534,24 +534,6 @@ MIT License - see [LICENSE](./LICENSE) for details.
 
 ---
 
-## 🙏 Acknowledgments
+**Built with ❤️ 
 
-- **Alchemy** - Blockchain infrastructure
-- **Circle** - USDC stablecoin
-- **Base** - L2 network for low-cost transactions
-- **x402 Community** - HTTP payment protocol
-
----
-
-## 🆘 Support
-
-- **Issues**: [GitHub Issues](https://github.com/yourrepo/vend/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourrepo/vend/discussions)
-- **Twitter**: [@vend](https://twitter.com/vend)
-- **Email**: support@vend.example.com
-
----
-
-**Built with ❤️ by the Vend team**
-
-Vend - Insert payment, get data. That's it. 🎰💰
+Vend - Insert payment, get data. 🎰💰
