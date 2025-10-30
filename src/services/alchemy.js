@@ -143,4 +143,144 @@ export async function getTokenMetadata(contractAddress) {
   }
 }
 
+/**
+ * Fetches NFTs owned by an address
+ * @param {Object} params - Query parameters
+ * @param {string} params.owner - Wallet address
+ * @param {string[]} params.contractAddresses - Optional NFT contract addresses to filter
+ * @param {string} params.pageKey - Pagination key
+ * @param {boolean} params.omitMetadata - Skip fetching metadata (faster)
+ * @returns {Promise<Object>} NFT data
+ */
+export async function getNFTsForOwner(params) {
+  try {
+    const {
+      owner,
+      contractAddresses = [],
+      pageKey,
+      omitMetadata = false,
+    } = params;
+
+    if (!owner) {
+      throw new Error('Owner address is required');
+    }
+
+    const options = {
+      omitMetadata,
+    };
+
+    if (contractAddresses.length > 0) {
+      options.contractAddresses = contractAddresses;
+    }
+    if (pageKey) {
+      options.pageKey = pageKey;
+    }
+
+    logger.info({ owner, options }, 'Fetching NFTs for owner');
+
+    const response = await alchemy.nft.getNftsForOwner(owner, options);
+
+    logger.info({
+      nftCount: response.ownedNfts.length,
+      totalCount: response.totalCount,
+      hasMore: !!response.pageKey,
+    }, 'NFTs retrieved');
+
+    return {
+      nfts: response.ownedNfts,
+      pageKey: response.pageKey,
+      totalCount: response.totalCount,
+    };
+  } catch (error) {
+    logger.error({ err: error }, 'Error fetching NFTs');
+    throw error;
+  }
+}
+
+/**
+ * Fetches NFT metadata
+ * @param {Object} params - Query parameters
+ * @param {string} params.contractAddress - NFT contract address
+ * @param {string} params.tokenId - Token ID
+ * @returns {Promise<Object>} NFT metadata
+ */
+export async function getNFTMetadata(params) {
+  try {
+    const { contractAddress, tokenId } = params;
+
+    if (!contractAddress || !tokenId) {
+      throw new Error('Contract address and token ID are required');
+    }
+
+    logger.info({ contractAddress, tokenId }, 'Fetching NFT metadata');
+
+    const metadata = await alchemy.nft.getNftMetadata(contractAddress, tokenId);
+
+    return metadata;
+  } catch (error) {
+    logger.error({ err: error }, 'Error fetching NFT metadata');
+    throw error;
+  }
+}
+
+/**
+ * Fetches floor price for an NFT collection
+ * @param {string} contractAddress - NFT contract address
+ * @returns {Promise<Object>} Floor price data
+ */
+export async function getNFTFloorPrice(contractAddress) {
+  try {
+    logger.info({ contractAddress }, 'Fetching NFT floor price');
+
+    const floorPrice = await alchemy.nft.getFloorPrice(contractAddress);
+
+    return floorPrice;
+  } catch (error) {
+    logger.error({ err: error }, 'Error fetching NFT floor price');
+    throw error;
+  }
+}
+
+/**
+ * Fetches token prices
+ * @param {Object} params - Query parameters
+ * @param {string[]} params.addresses - Token contract addresses
+ * @returns {Promise<Object>} Token price data
+ */
+export async function getTokenPrices(params) {
+  try {
+    const { addresses } = params;
+
+    if (!addresses || addresses.length === 0) {
+      throw new Error('At least one token address is required');
+    }
+
+    logger.info({ tokenCount: addresses.length }, 'Fetching token prices');
+
+    // Note: Alchemy doesn't have a direct price API, but we can get token metadata
+    // In production, you'd integrate with CoinGecko, CoinMarketCap, or DeFi price oracles
+    const prices = await Promise.all(
+      addresses.map(async (address) => {
+        const metadata = await alchemy.core.getTokenMetadata(address);
+        return {
+          address,
+          symbol: metadata.symbol,
+          name: metadata.name,
+          decimals: metadata.decimals,
+          // Note: Price would come from external API
+          price: null,
+          message: 'Price data requires external API integration (CoinGecko, etc.)',
+        };
+      })
+    );
+
+    return {
+      tokens: prices,
+    };
+  } catch (error) {
+    logger.error({ err: error }, 'Error fetching token prices');
+    throw error;
+  }
+}
+
 export default alchemy;

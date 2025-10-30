@@ -52,6 +52,9 @@ export class PaymentService {
     console.log(chalk.gray(`Amount: ${amount} USDC`));
     console.log(chalk.gray(`Recipient: ${recipient}\n`));
 
+    // Ensure recipient address is properly checksummed (prevents ENS resolution errors)
+    const recipientAddress = ethers.getAddress(recipient);
+
     // Create provider and wallet
     const provider = new ethers.JsonRpcProvider(rpcUrl);
     const wallet = new ethers.Wallet(this.privateKey, provider);
@@ -93,7 +96,7 @@ export class PaymentService {
         color: 'cyan'
       }).start();
 
-      const tx = await usdcContract.transfer(recipient, amountInUnits);
+      const tx = await usdcContract.transfer(recipientAddress, amountInUnits);
 
       sendSpinner.text = `Transaction sent: ${tx.hash}`;
       sendSpinner.succeed();

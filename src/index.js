@@ -4,6 +4,10 @@ import { config, validateConfig } from './config.js';
 import { logger } from './logger.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import transfersRouter from './routes/transfers.js';
+import nftsRouter from './routes/nfts.js';
+import tokensRouter from './routes/tokens.js';
+import webhooksRouter from './routes/webhooks.js';
+import { startWebhookPolling } from './services/webhooks.js';
 
 /**
  * Vend - Monetized Transaction History API
@@ -68,7 +72,15 @@ app.get('/', (req, res) => {
     endpoints: {
       health: 'GET /health',
       transfers: 'GET /api/transfers',
-      info: 'GET /api/transfers/info',
+      nfts: 'GET /api/nfts',
+      nftMetadata: 'GET /api/nfts/metadata',
+      nftFloorPrice: 'GET /api/nfts/floor-price',
+      tokenBalances: 'GET /api/tokens/balances',
+      tokenMetadata: 'GET /api/tokens/metadata',
+      tokenPrices: 'GET /api/tokens/prices',
+      webhooks: 'GET /api/webhooks',
+      createWebhook: 'POST /api/webhooks',
+      deleteWebhook: 'DELETE /api/webhooks/:id',
     },
     documentation: 'https://github.com/yourusername/vend',
   });
@@ -76,6 +88,9 @@ app.get('/', (req, res) => {
 
 // API routes
 app.use('/api/transfers', transfersRouter);
+app.use('/api/nfts', nftsRouter);
+app.use('/api/tokens', tokensRouter);
+app.use('/api/webhooks', webhooksRouter);
 
 // Error handlers (must be last)
 app.use(notFoundHandler);
@@ -94,6 +109,9 @@ const server = app.listen(config.port, () => {
     console.log('   x402 + Alchemy | Insert payment → Get data');
     console.log(`   http://localhost:${config.port}\n`);
   }
+
+  // Start webhook polling service (check every 5 minutes)
+  startWebhookPolling(300000);
 });
 
 // Graceful shutdown

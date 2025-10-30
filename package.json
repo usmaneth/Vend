@@ -1,7 +1,7 @@
 {
   "name": "vend",
   "version": "1.0.0",
-  "description": "Vend - Monetized Transaction History API using x402 and Alchemy. Blockchain data vending machine: insert payment, get data instantly.",
+  "description": "Pay-per-use blockchain data API via x402 & Alchemy. Get NFTs, tokens, transactions with USDC micropayments. Production-ready with on-chain verification.",
   "main": "src/index.js",
   "type": "module",
   "scripts": {
@@ -9,7 +9,8 @@
     "dev": "node --watch src/index.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
-    "demo": "node demo.js"
+    "demo": "node demo.js",
+    "cli": "node packages/vend-cli/src/cli.js"
   },
   "keywords": [
     "vend",
@@ -18,12 +19,20 @@
     "alchemy",
     "x402",
     "api",
+    "nft",
+    "tokens",
+    "erc20",
+    "erc721",
     "data-vending",
     "payments",
+    "usdc",
+    "base",
     "web3",
     "micropayments",
     "transaction-history",
-    "pay-per-use"
+    "pay-per-use",
+    "webhooks",
+    "on-chain-verification"
   ],
   "author": "",
   "license": "MIT",

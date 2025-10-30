@@ -5,6 +5,7 @@ import boxen from 'boxen';
 import Table from 'cli-table3';
 import { X402Client } from '../x402-client.js';
 import { PaymentService } from '../services/payment.js';
+import { outputData } from '../utils/formatters.js';
 
 export async function queryCommand(url, options) {
   const client = new X402Client();
@@ -51,10 +52,10 @@ export async function queryCommand(url, options) {
 
     // Check if payment required
     if (initialResponse.status === 402) {
-      await handlePaymentRequired(client, url, params, initialResponse.data, paymentService);
+      await handlePaymentRequired(client, url, params, initialResponse.data, paymentService, options);
     } else {
       // Success! Display data
-      displaySuccessResponse(initialResponse);
+      displaySuccessResponse(initialResponse, options.format);
     }
 
   } catch (error) {
@@ -64,7 +65,7 @@ export async function queryCommand(url, options) {
   }
 }
 
-async function handlePaymentRequired(client, url, params, paymentInfo, paymentService = null) {
+async function handlePaymentRequired(client, url, params, paymentInfo, paymentService = null, options = {}) {
   // Check if this is an invalid payment response
   if (paymentInfo.message && paymentInfo.message.includes('could not be verified')) {
     console.log(chalk.red.bold('\n❌ Invalid Payment\n'));
@@ -129,7 +130,7 @@ ${chalk.gray('Recipient:')}  ${chalk.white(paymentInfo.expected.recipient)}
       const response = await client.request(url, params, txHash);
       spinner.succeed(chalk.green('Payment verified!'));
 
-      displaySuccessResponse(response);
+      displaySuccessResponse(response, options.format);
       return;
 
     } catch (error) {
@@ -263,81 +264,37 @@ ${chalk.gray('Recipient:')}  ${chalk.white(payment.recipient)}
   }
 }
 
-function displaySuccessResponse(response) {
+function displaySuccessResponse(response, format = 'table') {
   console.log(chalk.green.bold('\n✅ Success!\n'));
 
   // Display payment info if present
   if (response.data.payment) {
-    const paymentTable = new Table({
-      head: [chalk.cyan('Payment Info'), chalk.cyan('Value')],
-      colWidths: [20, 50],
-    });
-
     const paymentAmount = response.data.payment.amount || '0.01';
     const paymentCurrency = response.data.payment.currency || 'USDC';
     const paymentHash = response.data.payment.hash || 'N/A';
 
-    paymentTable.push(
-      ['Hash', chalk.gray(paymentHash.length > 20 ? paymentHash.substring(0, 20) + '...' : paymentHash)],
-      ['Amount', chalk.green(paymentAmount + ' ' + paymentCurrency)],
-      ['Verified', response.data.payment.verified ? chalk.green('✓ Yes') : chalk.red('✗ No')]
-    );
-
-    console.log(paymentTable.toString());
-    console.log('');
+    console.log(chalk.gray(`Payment: ${paymentHash.length > 20 ? paymentHash.substring(0, 20) + '...' : paymentHash}`));
+    console.log(chalk.gray(`Amount: ${paymentAmount} ${paymentCurrency}`));
+    console.log(chalk.gray(`Verified: ${response.data.payment.verified ? '✓ Yes' : '✗ No'}\n`));
   }
 
-  // Display data
+  // Display data using formatter
   console.log(chalk.cyan.bold('📊 Response Data:\n'));
 
   if (response.data.data) {
-    const data = response.data.data;
+    outputData(response.data.data, format, 'transfers');
 
-    // If it's transfers data, display in table
-    if (data.transfers && Array.isArray(data.transfers)) {
-      displayTransfersTable(data.transfers);
-
-      if (data.totalCount) {
-        console.log(chalk.gray(`\nTotal: ${data.totalCount} transfers`));
-      }
-    } else {
-      // Display as JSON
-      console.log(chalk.white(JSON.stringify(data, null, 2)));
+    if (response.data.data.totalCount) {
+      console.log(chalk.gray(`\nTotal: ${response.data.data.totalCount} transfers`));
     }
   } else {
-    console.log(chalk.white(JSON.stringify(response.data, null, 2)));
+    // Fallback for non-standard response
+    if (format === 'json') {
+      console.log(JSON.stringify(response.data, null, 2));
+    } else {
+      console.log(chalk.white(JSON.stringify(response.data, null, 2)));
+    }
   }
 
   console.log(chalk.gray('\n────────────────────────────────────────\n'));
-}
-
-function displayTransfersTable(transfers) {
-  const table = new Table({
-    head: [
-      chalk.cyan('Type'),
-      chalk.cyan('Asset'),
-      chalk.cyan('Value'),
-      chalk.cyan('From'),
-      chalk.cyan('To'),
-    ],
-    colWidths: [12, 10, 15, 12, 12],
-  });
-
-  const displayTransfers = transfers.slice(0, 10); // Show first 10
-
-  displayTransfers.forEach(transfer => {
-    table.push([
-      chalk.gray(transfer.category),
-      chalk.white(transfer.asset || 'ETH'),
-      chalk.green(transfer.value?.toString().substring(0, 10) || '0'),
-      chalk.gray(transfer.from?.substring(0, 10) + '...'),
-      chalk.gray(transfer.to?.substring(0, 10) + '...'),
-    ]);
-  });
-
-  console.log(table.toString());
-
-  if (transfers.length > 10) {
-    console.log(chalk.gray(`\n... and ${transfers.length - 10} more transfers`));
-  }
 }
