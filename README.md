@@ -2,7 +2,7 @@
 
 <img width="498" height="241" alt="Screenshot 2025-10-27 at 4 41 39 AM" src="https://github.com/user-attachments/assets/56a18ece-52db-4914-9553-b421f3c7f503" />
 
-**Pay Per Use Blockchain Data API via x402 & Alchemy**
+**Montizable Blockchain Data API via x402 & Alchemy**
 
 Blockchain data on demand - like a vending machine. Insert payment (USDC), get instant access to NFTs, tokens, transactions, and more. No accounts, no API keys, just pay per query.
 
