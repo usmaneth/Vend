@@ -8,22 +8,22 @@ Blockchain data on demand - like a vending machine. Insert payment (USDC), get i
 
 ### Vend Project Structure 
 
-**🖥️ Vend Server API (Express + x402):**
-- 📊 **Transaction History** - Asset transfers (ETH, ERC20, ERC721, ERC1155)
-- 🖼️ **NFT Data** - Owned NFTs, metadata, floor prices
-- 🪙 **Token Balances** - ERC20 holdings and metadata
-- 🔔 **Webhooks** - Real time notifications for new transactions
-- 💰 **x402 Payments** - USDC micropayments with on chain verification
-- ✅ **Production Ready** - Deploy to mainnet
+**Vend Server API (Express + x402):**
+- **Transaction History** - Asset transfers (ETH, ERC20, ERC721, ERC1155)
+- **NFT Data** - Owned NFTs, metadata, floor prices
+- **Token Balances** - ERC20 holdings and metadata
+- **Webhooks** - Real time notifications for new transactions
+- **x402 Payments** - USDC micropayments with on chain verification
+- **Production Ready** - Deploy to mainnet
 
-**⌨️ CLI Tool (@asimfiles/vend-cli):**
-- 🛠️ **8 Commands** - query, nfts, tokens, balance, info, config, saved, webhook
-- 📋 **Output Formats** - Table, JSON, CSV
-- 💾 **Saved Queries** - Create reusable query templates
-- 🤖 **Automatic Payments** - Optional wallet integration for hands-free payments
-- 🌐 **Multi-Network** - Base, Ethereum, Polygon, Arbitrum, Optimism
+**Vend CLI Tool (@asimfiles/vend-cli):**
+- **8 Commands** - query, nfts, tokens, balance, info, config, saved, webhook
+- **Output Formats** - Table, JSON, CSV
+- **Saved Queries** - Create reusable query templates
+- **Automatic Payments** - Optional wallet integration for hands free payments
+- **Multi-Network** - Base, Ethereum, Polygon, Arbitrum, Optimism
 
-> **Powered by:** [x402-onchain-verification](https://npmjs.com/package/x402-onchain-verification) - Open-source middleware for direct on-chain payment verification. No facilitator servers needed.
+> **Powered by:** [x402-onchain-verification](https://npmjs.com/package/x402-onchain-verification) - Open-source middleware for direct on-chain payment verification. No facilitator servers needed. Built by Alchemy. 
 
 ```
 ┌─────────────────────────────────┐
@@ -38,7 +38,7 @@ Blockchain data on demand - like a vending machine. Insert payment (USDC), get i
 
 ---
 
-## 🚀 Fork & Deploy in 5 Minutes
+## Fork & Deploy in 5 Minutes
 
 **Vend is production-ready with real on-chain payment verification.**
 
@@ -65,7 +65,7 @@ Real USDC payments work immediately - no additional setup needed. Payment verifi
 
 ---
 
-## 🎯 Why Vend?
+##Why Vend?
 
 **Traditional APIs:**
 - Sign up for account ❌
@@ -78,14 +78,14 @@ Real USDC payments work immediately - no additional setup needed. Payment verifi
 - That's it. 💰
 
 Perfect for:
-- 🤖 **AI Agents** - No API key management, just send USDC
-- 👨‍💻 **Developers** - Pay-per-use, no subscriptions
-- 📊 **Data Analytics** - Access blockchain data on demand
-- 🔬 **Researchers** - Query without account setup
+- **AI Agents** - No API key management, just send USDC
+- **Developers** - Pay per use, no subscriptions, create buisnesses from your API key 
+- **Data Analytics** - Access blockchain data on demand
+- **Researchers** - Query without account setup
 
 ---
 
-## 🔌 How x402 Works
+## How x402 Works
 
 **x402** is an open protocol that revives the HTTP `402 Payment Required` status code for instant micropayments.
 
@@ -121,18 +121,11 @@ Perfect for:
        │<─────────────────────────────────────────│
 ```
 
-### Why x402?
-
-- ⚡ **Instant** - No account signup, no OAuth, just pay
-- 🔒 **Secure** - On-chain payment verification
-- 💰 **Fair** - Pay only for what you use
-- 🌐 **Open Standard** - Anyone can implement x402
-
 ---
 
-## 📊 API Endpoints
+## API Endpoints/Calls
 
-All endpoints require USDC payment via x402. Payment is verified on-chain before returning data.
+All endpoints require USDC payment via x402. Payment is verified on chain before returning data.
 
 ### Transaction History
 
@@ -359,11 +352,11 @@ Run `vend <command> --help` for detailed usage.
 
 ---
 
-## 🚀 Deployment
+## Deployment
 
 > **✅ Production Ready!** Vend includes real on-chain USDC payment verification using [x402-onchain-verification](https://npmjs.com/package/x402-onchain-verification). Deploy to mainnet now!
 
-📖 **[Complete Deployment Guide →](./DEPLOYMENT.md)**
+ **[Complete Deployment Guide →](./DEPLOYMENT.md)**
 
 The deployment guide includes:
 - Testnet setup (Base Sepolia) for testing
@@ -428,7 +421,7 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete configuration guide.
 
 ---
 
-## 💰 Economics
+## Hypothetical Economics
 
 ### Development (Free)
 
@@ -446,7 +439,7 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete configuration guide.
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌──────────────────────────────────────────────┐
@@ -498,7 +491,7 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete configuration guide.
 
 ---
 
-## 🔒 Security
+## Security
 
 - ✅ On-chain payment verification (no trust required)
 - ✅ ERC20 Transfer event parsing
@@ -510,19 +503,18 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete configuration guide.
 
 ---
 
-## 📚 Documentation
+## Documentation
 
 - **[Getting Started](./docs/getting-started.md)** - Setup guide
 - **[x402 Integration](./docs/x402-integration.md)** - Payment protocol deep dive
 - **[Alchemy Guide](./docs/alchemy-guide.md)** - Advanced blockchain queries
 - **[Deployment](./DEPLOYMENT.md)** - Go to production
-- **[API Reference](./docs/api-reference.md)** - Complete endpoint documentation
-- **[CLI Guide](./docs/cli-guide.md)** - Command-line usage
+- **[CLI Guide](./docs/cli-guide.md)** - Command line usage
 - **[Value Prop](./VALUE_PROPOSITION.md)** - Why Vend?
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
@@ -533,7 +525,5 @@ We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for gu
 MIT License - see [LICENSE](./LICENSE) for details.
 
 ---
-
-**Built with ❤️ 
 
 Vend - Insert payment, get data. 🎰💰
