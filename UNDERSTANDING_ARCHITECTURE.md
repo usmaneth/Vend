@@ -138,7 +138,7 @@ You can build it RIGHT NOW:
 
 ```bash
 # Terminal 1: Start TxPay
-cd /Users/usman/Documents/code/txpay
+cd txpay
 npm run dev
 
 # Terminal 2: Run your WhaleTracker
