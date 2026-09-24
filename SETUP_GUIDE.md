@@ -69,7 +69,7 @@ LOG_LEVEL=info
 
 **Example filled in:**
 ```bash
-ALCHEMY_API_KEY=oKxs-03sij-U_dn0QwcW-jJQGY6H
+ALCHEMY_API_KEY=your_actual_api_key_here
 ALCHEMY_NETWORK=eth-mainnet
 PAYMENT_ADDRESS=0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb
 ```
